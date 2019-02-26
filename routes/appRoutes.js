@@ -30,18 +30,19 @@ module.exports = function(app) {
    app.route('/usercategories/:userId')
    .get(usercats.list_user_categories);
 
-   app.route('/usercategory/:userId/:categoryId')
-   .post(usercats.add_user_category)
-   .delete(usercats.delete_user_category);
-   
+   app.route('/usercategory')
+   .delete(usercats.delete_user_category)
+   .post(usercats.add_user_category);
+
 
    // Product Categories
    app.route('/productcategories/:productId')
-   .get(userprods.list_product_categories);
+   .get(prodcats.list_product_categories);
 
-   app.route('/productcategory/:productId/:categoryId')
-   .post(prodcats.add_product_category)
-   .delete(prodcats.delete_product_category);
+   app.route('/productcategory')
+   .delete(prodcats.delete_product_category)
+   .post(prodcats.add_product_category);
+
 
     // Product Routes
     app.route('/products')
