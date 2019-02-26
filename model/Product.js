@@ -1,11 +1,39 @@
-'use strict';
-var sql = require('./db.js');
+"use strict";
+require("dotenv").config();
+var sql = require("./db.js");
 
 //Product object constructor
-var Product = function(product){
-    this.product = product;
-    this.status = product.status;
+var Product = function(data){
+    this.data = data;
 };
+
+// get a random product for the userId
+Product.getRandomProduct = function getRandomProduct(userId, result) {
+    var sqlStr = "SELECT DISTINCT a.* FROM product a "
+    + " INNER JOIN product_category b ON b.product_id = a.product_id "
+    + " INNER JOIN user_category c ON c.category_id = b.category_id "
+    + " WHERE c.user_id= ? "
+
+    // get only products that the user hasn"t seen before
+    if(process.env.APP_HIDESEENPRODS === "1") {
+        sqlStr += " AND a.product_id NOT IN (SELECT c.product_id from seen_product c WHERE c.user_id = ?)";
+    }
+
+    sqlStr += " ORDER BY RAND() LIMIT 1";
+    
+    sql.query(sqlStr, [userId, userId], function(err, res) {
+        if(err) {
+            console.log("error: ", err);
+            result(null,err);
+        } else {
+            // hide from the use if this flag is set in the app
+            if(!process.env.APP_HIDESEENPRODS === "1") {
+                insertUserSeenProduct(userId, res[0].product_id);
+            }
+            result(res,null);
+        }
+    });
+}
 
 
 Product.getAllProducts = function getAllProducts(result) {
@@ -22,9 +50,10 @@ Product.getAllProducts = function getAllProducts(result) {
 };
 
 
+
 Product.createProduct = function createProduct(newProduct, result) {
 
-        sql.query("INSERT INTO product SET ?", newProduct.product, function (err, res, fields) {
+        sql.query("INSERT INTO product SET ?", newProduct.data, function (err, res, fields) {
                 
                 if(err) {
                     console.log("error: ", err);
@@ -50,8 +79,8 @@ Product.getProductById = function getProductById(productId, result) {
 };
 
 
-Product.updateById = function(productId, product, result){
-  sql.query("UPDATE product SET ? WHERE product_id = ?", [product.product, productId], function (err, res, fields) {
+Product.updateProduct = function(productId, product, result){
+  sql.query("UPDATE product SET ? WHERE product_id = ?", [product.data, productId], function (err, res, fields) {
           if(err) {
               console.log("error: ", err);
                 result(null, err);
@@ -62,7 +91,7 @@ Product.updateById = function(productId, product, result){
 };
 
 Product.remove = function(productId, result){
-     sql.query("DELETE FROM product WHERE product_id = ?", [productId], function (err, res) {
+     sql.query("DELETE FROM product WHERE product_id = ?", productId, function (err, res) {
 
                 if(err) {
                     console.log("error: ", err);
@@ -74,6 +103,13 @@ Product.remove = function(productId, result){
             }); 
 };
 
+function insertUserSeenProduct(userId, productId) {
+    sql.query("INSERT into seen_product (product_id,user_id) values (?, ?)", [productId,userId], function(err,res) {
+        if(err) {
+            console.log("error: ", err);
+        } 
+    });
+}
 
 
 module.exports= Product;

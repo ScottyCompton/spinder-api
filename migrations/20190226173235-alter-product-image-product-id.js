@@ -15,19 +15,11 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return db.addForeignKey('user_category',
-  'user',
-  'user_category_user_id_fk',
-  {'user_id':'user_id'},
-  {
-    onDelete: 'CASCADE',
-    onUpdate: 'RESTRICT'
-  }
-  )
+  return db.changeColumn('product_image', 'product_id', {type: 'int', length: 11});
 };
 
 exports.down = function(db) {
-  return db.removeForeignKey('user_category', 'user_category_user_id_fk');
+  return db.changeColumn('product_image', 'product_id', {type: 'int', length: 10});
 };
 
 exports._meta = {

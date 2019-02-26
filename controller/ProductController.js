@@ -4,10 +4,13 @@ var Product = require('../model/Product.js');
 
 exports.list_all_products = function(req, res) {
   Product.getAllProducts(function(err, product) {
-    if (err)
+    if (err) {
       res.send(err);
+    } else {
       console.log('res', product);
-    res.send(product);
+      res.send(product);
+    }
+
   });
 };
 
@@ -15,21 +18,25 @@ exports.list_all_products = function(req, res) {
 
 exports.get_product = function(req, res) {
   Product.getProductById(req.params.productId, function(err, product) {
-    if (err)
+    if (err) {
       res.send(err);
-    res.json(product);
+    } else {
+      res.json(product);
+    }
   });
 };
 
 
-
 exports.create_product = function(req, res) {
-  var new_product = new Product(req.body);
+  var newProduct = new Product(req.body);
   
-      Product.createProduct(new_product, function(err, product) {  
-        if (err)
+      Product.createProduct(newProduct, function(err, product) {  
+        if (err) {
+          console.log(err);
           res.send(err);
-        res.json(product);
+        } else {
+          res.json(product);
+        }
       });
   
 };
@@ -37,19 +44,33 @@ exports.create_product = function(req, res) {
 
 
 exports.update_product = function(req, res) {
-  Product.updateById(req.params.productId, new Product(req.body), function(err, product) {
-    if (err)
+  Product.updateProduct(req.params.productId, new Product(req.body), function(err, product) {
+    if (err) {
       res.send(err);
-    res.json(product);
+    } else {
+      res.json(product);
+    }
   });
 };
 
+// pull a random product based on the user's category selections
+exports.get_random_product = function(req,res) {
+  Product.getRandomProduct(req.params.userId, function(err,product) {
+    if(err) {
+      res.send(err); 
+    } else {
+      res.json(product);
+    }
+  })
+}
 
 exports.delete_product = function(req, res) {
   Product.remove( req.params.productId, function(err, product) {
-    if (err)
+    if (err) {
       res.send(err);
-    res.json({ message: 'Product successfully deleted' });
+    } else {
+      res.json({ message: 'Product successfully deleted' });
+    }
   });
 };
 

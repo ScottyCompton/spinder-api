@@ -15,20 +15,30 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db, callback) {
-  db.addColumn('user', 'password',
-    {
-      type: 'string',
-      length: 255
-    }, function(err) {
+  return db.createTable('seen_product', {
+    user_id: {
+      type: 'int',
+      primaryKey: true,
+      autoIncrement: true
+    },
+    product_id: {
+      type: 'int',
+      length: 11,
+    },
+    user_id: {
+      type: 'int',
+      length:11,
+    }
+  }, function(err) {
     if (err) return callback(err);
     return callback();
   })
 };
 
 exports.down = function(db, callback) {
-  db.removeColumn('user','password', function(err) {
+  return db.dropTable('seen_product', 
+  function(err) {
     if (err) return callback(err);
-    return callback();
   });
 };
 

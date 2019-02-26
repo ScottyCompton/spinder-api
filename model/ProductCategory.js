@@ -2,14 +2,13 @@
 var sql = require('./db.js');
 
 //ProdCat object constructor
-var ProdCat = function(productCat){
-    this.productCat = productCat;
-    this.status = productCat.status;
+var ProdCat = function(data){
+    this.data = data;
 };
 
 // get all product categories, return null if the product_id
 // isn't present to act as a selected/not selected flag
-ProdCat.getProdCategories = function getProdCategories(productId, result) {
+ProdCat.getProductCategories = function getProductCategories(productId, result) {
     sql.query("SELECT a.*,b.product_id from category a LEFT OUTER JOIN product_category b ON b.category_id=a.category_id and b.product_id= ? ", productId, function (err, res) {
 
             if(err) {
@@ -25,7 +24,7 @@ ProdCat.getProdCategories = function getProdCategories(productId, result) {
 
 ProdCat.insertProductCategory = function insertProductCategory(newProdCat, result) {
 
-        sql.query("INSERT INTO product_category SET ?", newProdCat.productCat, function (err, res, fields) {
+        sql.query("INSERT INTO product_category SET ?", newProdCat.data, function (err, res, fields) {
                 
                 if(err) {
                     console.log("error: ", err);

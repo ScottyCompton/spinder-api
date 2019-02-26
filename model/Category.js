@@ -2,9 +2,8 @@
 var sql = require('./db.js');
 
 //Category object constructor
-var Category = function(category){
-    this.category = category;
-    this.status = category.status;
+var Category = function(data){
+    this.data = data;
 };
 
 
@@ -24,7 +23,7 @@ Category.getAllCategories = function getAllCategories(result) {
 
 Category.createCategory = function createCategory(newCategory, result) {
 
-        sql.query("INSERT INTO category SET ?", newCategory.category, function (err, res, fields) {
+        sql.query("INSERT INTO category SET ?", newCategory.data, function (err, res, fields) {
                 
                 if(err) {
                     console.log("error: ", err);
@@ -51,7 +50,7 @@ Category.getCategoryById = function getCategoryById(categoryId, result) {
 
 
 Category.updateById = function(categoryId, category, result){
-  sql.query("UPDATE category SET ? WHERE category_id = ?", [category.category, categoryId], function (err, res, fields) {
+  sql.query("UPDATE category SET ? WHERE category_id = ?", [category.data, categoryId], function (err, res, fields) {
           if(err) {
               console.log("error: ", err);
                 result(null, err);

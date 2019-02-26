@@ -14,9 +14,11 @@ exports.list_all_categories = function(req, res) {
 
 exports.get_category = function(req, res) {
   Category.getCategoryById(req.params.categoryId, function(err, category) {
-    if (err)
+    if (err) {
       res.send(err);
-    res.json(category);
+    } else {
+      res.json(category);
+    }
   });
 };
 
@@ -25,30 +27,35 @@ exports.get_category = function(req, res) {
 exports.create_category = function(req, res) {
   var new_category = new Category(req.body);
   
-      Category.createCategory(new_category, function(err, category) {  
-        if (err)
+  Category.createCategory(new_category, function(err, category) {  
+        if (err) {
           res.send(err);
-        res.json(category);
+        } else {
+          res.json(category);
+        }
       });
-  
 };
 
 
 
 exports.update_category = function(req, res) {
   Category.updateById(req.params.categoryId, new Category(req.body), function(err, category) {
-    if (err)
+    if (err) {
       res.send(err);
-    res.json(category);
+    } else {
+      res.json(category);
+    }
   });
 };
 
 
 exports.delete_category = function(req, res) {
   Category.remove( req.params.categoryId, function(err, category) {
-    if (err)
+    if (err) {
       res.send(err);
-    res.json({ message: 'Category successfully deleted' });
+    } else {
+      res.json({ message: 'Category successfully deleted' });
+    }
   });
 };
 

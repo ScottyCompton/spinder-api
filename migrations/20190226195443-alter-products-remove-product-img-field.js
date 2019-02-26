@@ -15,20 +15,18 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db, callback) {
-  db.addColumn('user', 'password',
-    {
-      type: 'string',
-      length: 255
-    }, function(err) {
+  return db.removeColumn('product', 'product_img', 
+  function(err) {
     if (err) return callback(err);
-    return callback();
-  })
+  });
 };
 
 exports.down = function(db, callback) {
-  db.removeColumn('user','password', function(err) {
+  return db.addColumn('product', 'product_img', {
+    type: 'string',
+    length: 255,
+  }, function(err) {
     if (err) return callback(err);
-    return callback();
   });
 };
 

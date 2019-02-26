@@ -2,9 +2,8 @@
 var sql = require('./db.js');
 
 //UserCat object constructor
-var UserCat = function(userCat){
-    this.userCat = userCat;
-    this.status = userCat.status;
+var UserCat = function(data){
+    this.data = data;
 };
 
 // get all product categories, return null if the user_id
@@ -25,7 +24,7 @@ UserCat.getUserCategories = function getUserCategories(userId, result) {
 
 UserCat.insertUserCategory = function insertUserCategory(newUserCat, result) {
 
-        sql.query("INSERT INTO user_category SET ?", newUserCat.userCat, function (err, res, fields) {
+        sql.query("INSERT INTO user_category SET ?", newUserCat.data, function (err, res, fields) {
                 
                 if(err) {
                     console.log("error: ", err);

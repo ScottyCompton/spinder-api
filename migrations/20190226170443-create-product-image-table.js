@@ -15,21 +15,32 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db, callback) {
-  db.addColumn('user', 'password',
-    {
+  db.createTable('product_image', {
+    product_image_id: {
+      type: 'int',
+      primaryKey: true,
+      autoIncrement: true
+    },
+    product_id: {
+      type: 'int',
+      unsigned: true,
+      notNull: true
+    },
+    product_image: {
       type: 'string',
       length: 255
-    }, function(err) {
+    },
+    create_date: {
+      type: 'timestamp'
+    }
+  }, function(err) {
     if (err) return callback(err);
     return callback();
   })
 };
 
-exports.down = function(db, callback) {
-  db.removeColumn('user','password', function(err) {
-    if (err) return callback(err);
-    return callback();
-  });
+exports.down = function(db) {
+  return db.dropTable('product_image');
 };
 
 exports._meta = {

@@ -15,20 +15,16 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db, callback) {
-  db.addColumn('user', 'password',
-    {
-      type: 'string',
-      length: 255
-    }, function(err) {
+  return db.addColumn('product', 'product_details', {
+    type: 'text'
+  }, function(err) {
     if (err) return callback(err);
-    return callback();
-  })
+  });
 };
 
 exports.down = function(db, callback) {
-  db.removeColumn('user','password', function(err) {
-    if (err) return callback(err);
-    return callback();
+  return db.removeColumn('product','product_details',function(err) {
+    console.log('Could not rollback! error: ', err);
   });
 };
 
