@@ -1,8 +1,10 @@
 require('dotenv').config();
-var express = require('express'),
+var express = require('express');
+var cors = require('cors');
 bodyParser = require('body-parser');
-app = express(),
+app = express();
 port = process.env.PORT || 3001;
+app.use(cors());
 app.listen(port);
 console.log(process.env.APP_NAME + ' started on port ' + port +' (yay!)');
 

@@ -25,11 +25,12 @@ exports.add_user_category = function(req, res) {
 
 
 exports.delete_user_category = function(req, res) {
-  UserCat.remove(req, function(err, userCat) {
+
+  UserCat.remove(new UserCat(req.body), function(err, userCat) {
     if (err) {
       res.send(err);
     } else {
-      res.json({ message: 'User Category successfully deleted' });
+      res.json(userCat);
     }
   });
 };

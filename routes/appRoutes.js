@@ -20,6 +20,12 @@ module.exports = function(app) {
    .get(users.get_user)
    .delete(users.delete_user);
 
+   app.route('/validateuser/')
+   .post(users.login_user);
+
+   app.route('/updatepassword/')
+   .post(users.update_password);
+
   /* TODO: Clean up all routes so 1) they don't require an id for an update, 
   and 2) conform to some kind of sane, logical, predictable convention */
 
@@ -39,8 +45,8 @@ module.exports = function(app) {
    .get(usercats.list_user_categories);
 
    app.route('/usercategory')
-   .delete(usercats.delete_user_category)
-   .post(usercats.add_user_category);
+   .post(usercats.add_user_category)
+   .delete(usercats.delete_user_category);
 
 
    // Product Categories
@@ -64,6 +70,11 @@ module.exports = function(app) {
 
     app.route('/randomproduct/:userId')
     .get(products.get_random_product);
+
+    app.route('/multiplerandomproducts/')
+    .post(products.get_multiple_random_products);
+    
+    
 
     // Product Images
     app.route('/productimages/:productId') // note productimages is PLURAL

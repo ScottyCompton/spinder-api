@@ -1,6 +1,7 @@
 'use strict';
 
 var Product = require('../model/Product.js');
+var ProductImage = require('../model/ProductImage.js');
 
 exports.list_all_products = function(req, res) {
   Product.getAllProducts(function(err, product) {
@@ -54,6 +55,7 @@ exports.update_product = function(req, res) {
 };
 
 // pull a random product based on the user's category selections
+
 exports.get_random_product = function(req,res) {
   Product.getRandomProduct(req.params.userId, function(err,product) {
     if(err) {
@@ -61,8 +63,22 @@ exports.get_random_product = function(req,res) {
     } else {
       res.json(product);
     }
-  })
+  });
 }
+
+
+exports.get_multiple_random_products = function(req,res) {
+  var postData = new Product(req.body);
+  Product.getMultipleRandomProducts(postData.data, function(err,products) {
+    if(err) {
+      res.send(err); 
+    } else {
+      res.json(products);
+    }
+  });
+}
+
+
 
 exports.delete_product = function(req, res) {
   Product.remove( req.params.productId, function(err, product) {

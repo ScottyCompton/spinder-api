@@ -6,6 +6,14 @@ var ProductImage = function(data){
     this.data = data;
 };
 
+ // this is what I pass as handleResult to getAllProductImages
+function addProductImagesToProduct(err, productImages) { 
+    if(err)
+    productObj.product_images = productImages;
+    productArray.push(productObj);
+}
+
+
 
 ProductImage.getAllProductImages = function getAllProductImages(productId, result) {
     sql.query("Select * from product_image WHERE product_id = ? ", productId, function (err, res) {
@@ -18,6 +26,7 @@ ProductImage.getAllProductImages = function getAllProductImages(productId, resul
             }
         });   
 };
+
 
 ProductImage.getProductCoverImage = function(productId, result) {
     sql.query("SELECT * FROM product_image WHERE product_id = ? LIMIT 1", productId, function(err,res) {
